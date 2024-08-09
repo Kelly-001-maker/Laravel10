@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use function Laravel\Prompts\select;
 use App\Models\User;
 use App\Http\Controllers\Profile\AvatarController;
+use OpenAI\Laravel\Facades\OpenAI;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,5 +59,23 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+
+// Open AI
+Route:: get('/openai', function(){
+    $result = OpenAI::chat()->create([
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+            ['role' => 'user', 'content' => 'Hello!'],
+        ],
+    ]);
+
+    echo $result->choices[0]->message->content; // Hello! How can I assist you today?
+
+});
+
+
+
 
 require __DIR__.'/auth.php';
