@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Controllers\Profile\AvatarController;
 use OpenAI\Laravel\Facades\OpenAI;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\TicketController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -75,7 +76,10 @@ Route:: get('/openai', function(){
 
 });
 
-
-
+Route::middleware('auth')->group(function(){
+    Route:: resource('/ticket', TicketController::class);
+    // Route::get('/ticket/create', [TicketController::class, 'create'])->name('ticket.create');
+    // Route::get('/ticket/create', [TicketController::class, 'store'])->name('ticket.store');
+});
 
 require __DIR__.'/auth.php';
